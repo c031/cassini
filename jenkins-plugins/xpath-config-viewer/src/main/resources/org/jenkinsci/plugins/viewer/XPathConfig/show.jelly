@@ -1,0 +1,48 @@
+<!--
+The MIT License
+
+Copyright (c) 2004-2009, Sun Microsystems, Inc., Kohsuke Kawaguchi, Frederik Fromm
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+-->
+<j:jelly xmlns:j="jelly:core" xmlns:util="jelly:util" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+    <util:replace value="${it.id}" var="classId" old="." new="_" />
+    <tr>
+        <td colspan="2" style="border-top: solid #FCAF3E;">            
+            <div style="float:left"><a name="${it.name}"></a>
+                <b>${it.name} | XPath:</b>&amp;nbsp;<span style="font-family:courier;font-size:12px;font-weight:bold">${it.xpath}</span> | 
+                <b>Job Filter:</b>&amp;nbsp;<span style="font-family:courier;font-size:12px;font-weight:bold">${it.comment}</span>
+            </div>
+            <div style="float:right">
+                <span class="${classId}"><a href="#" onclick="javascript:$$$$('.${classId}').each(Element.toggle);$$$$('.${classId}a').each(Element.toggle)"><img width="16" height="16" src="${imagesURL}/16x16/document_add.gif" title="expand" alt="expand" /></a></span>
+                <span class="${classId}a" style="display:none"><a href="#" onclick="javascript:$$$$('.${classId}').each(Element.toggle);$$$$('.${classId}a').each(Element.toggle)"><img width="16" height="16" src="${imagesURL}/16x16/document_delete.gif" title="collapse" alt="collapse" /></a></span>
+                <a href="editConfig?id=${it.id}"><img width="16" height="16" src="${imagesURL}/16x16/document_edit.gif" /></a>
+                <a href="delConfig?id=${it.id}" onclick="if(confirm('delete config from view?')) return true; else return false;"><img width="16" height="16" src="${imagesURL}/16x16/edit-delete.gif" /></a>
+            </div>
+        </td>
+    </tr>            
+    <j:forEach var="block" items="${it.distinctXmlBlocks}">
+    <tr class="${classId}" style="display:none">
+        <td style="border: 1px solid #bbb;font-family:courier;font-size:12px;">${block.escapedXmlblock}</td>
+        <td style="border: 1px solid #bbb;"><j:forEach var="project" items="${block.projects}">
+        <a href="${rootURL}/${project.url}configure">${project.name}</a><br />
+        </j:forEach></td>
+    </tr>                   
+    </j:forEach>
+</j:jelly>
